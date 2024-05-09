@@ -9,11 +9,8 @@ import com.khun.composeopenai.model.Answer
 import com.khun.composeopenai.model.BaseModel
 import com.khun.composeopenai.model.Message
 import com.khun.composeopenai.model.Question
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.io.InputStream
-import java.util.Properties
 import javax.inject.Inject
 
 
