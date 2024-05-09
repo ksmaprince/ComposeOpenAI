@@ -18,13 +18,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOpenAIService(retrofit: Retrofit) : OpenAIService{
+    fun provideOpenAIService(retrofit: Retrofit): OpenAIService {
         return retrofit.create(OpenAIService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit{
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.openai.com/v1/chat/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -34,7 +34,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient{
+    fun provideHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -45,7 +45,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpInterceptor(): HttpLoggingInterceptor{
+    fun provideOkHttpInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 }

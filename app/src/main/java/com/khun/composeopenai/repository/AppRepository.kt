@@ -11,23 +11,34 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class AppRepository @Inject constructor(private val apiService: OpenAIService, private val ansDao: AnswerDao) {
-    suspend fun askQuestion(prevQuestions: List<Message>, question: String): BaseModel<Answer>{
+class AppRepository @Inject constructor(
+    private val apiService: OpenAIService,
+    private val ansDao: AnswerDao
+) {
+    suspend fun askQuestion(prevQuestions: List<Message>, question: String): BaseModel<Answer> {
         try {
-            apiService.askQuestion(question = Question(messages = prevQuestions + Message(role = "user", content = question)))
+            apiService.askQuestion(
+                "Bearer sk-proj-oQcOO5Taa7yqRHKDtMomT3BlbkFJIE6MldhRlrNIHTv3bkrn",
+                question = Question(
+                    messages = prevQuestions + Message(
+                        role = "user",
+                        content = question
+                    )
+                )
+            )
                 .also { response ->
-                    return if (response.isSuccessful){
+                    return if (response.isSuccessful) {
                         BaseModel.Success(data = response.body()!!)
-                    }else{
+                    } else {
                         BaseModel.Error(response.errorBody()?.toString().toString())
                     }
                 }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             return BaseModel.Error(e.message.toString())
         }
     }
 
-     suspend fun getMessages(): Flow<List<Message>> {
+    suspend fun getMessages(): Flow<List<Message>> {
         return ansDao.getAnswer().map { value ->
             value.map { entity ->
                 Message(role = entity.role, content = entity.content)
@@ -35,7 +46,7 @@ class AppRepository @Inject constructor(private val apiService: OpenAIService, p
         }
     }
 
-    suspend fun addAnswer(answer: Message){
+    suspend fun addAnswer(answer: Message) {
         ansDao.addAnswer(AnswerEntity(role = answer.role, content = answer.content))
     }
 }
