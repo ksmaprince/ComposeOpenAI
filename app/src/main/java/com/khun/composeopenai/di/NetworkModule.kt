@@ -1,5 +1,6 @@
 package com.khun.composeopenai.di
 
+import com.khun.composeopenai.BuildConfig
 import com.khun.composeopenai.data.remote.OpenAIService
 import dagger.Module
 import dagger.Provides
@@ -26,7 +27,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.openai.com/v1/chat/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
